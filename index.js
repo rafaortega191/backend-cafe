@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
-import * as dotenv from "dotenv"
-import morgan from "morgan"
+import * as dotenv from "dotenv";
+import morgan from "morgan";
+import path from "path";
 
 dotenv.config();
 
@@ -21,5 +22,12 @@ app.use(express.json()); //permite interpretar json en un request
 app.use(express.urlencoded({extended:true})); //permite interpretar string y arrays del request
 app.use(cors()); //permite conexiones remotas
 app.use(morgan('dev')); // da info extra en la terminal
+//cargar un archivo estatico
+console.log(path.join(__dirname, '/public'));
+app.use(express.static(path.join(__dirname, '/public')));
 
 //rutas
+// http://localhost:4000/prueba
+app.get('/prueba', (req, res )=>{
+    res.send('esto es una prueba de la ruta GET')
+})
