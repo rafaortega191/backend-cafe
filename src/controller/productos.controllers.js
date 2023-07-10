@@ -1,4 +1,5 @@
-import producto from "../models/producto";
+import Producto from "../models/producto";
+
 
 export const controladorPrueba = (req, res) => {
     res.send("esto es una prueba de la ruta GET");
@@ -6,7 +7,7 @@ export const controladorPrueba = (req, res) => {
 
 export const crearProducto = async (req, res) => {
     try{
-        const productoNuevo = new producto(req.body);
+        const productoNuevo = new Producto(req.body);
         await productoNuevo.save();
         res.status(201).json({
             mensaje:'el producto fue creado correctamente'
@@ -23,13 +24,44 @@ export const crearProducto = async (req, res) => {
 export const obtenerListaProductos = async (req, res)=>{
     try{
         //buscar en la bd la collection de productos
-        const productos = await producto.find();
+        const productos = await Producto.find();
         res.status(200).json(productos);
         
     }catch(error){
         console.log(error);
         res.status(404).json({
             mensaje:'error al recuperar la lista de productos'
+        })
+    }
+}
+
+export const obtenerProducto = async (req, res)=>{
+    try{
+        //buscar en la bd un documento mediante la id
+        console.log(req.params.id);
+        const producto = await Producto.findById(req.params.id);
+        res.status(200).json(producto);
+        
+    }catch(error){
+        console.log(error);
+        res.status(404).json({
+            mensaje:'error al recuperar el producto'
+        })
+    }
+}
+
+export const borrarProducto = async (req, res)=>{
+    try{
+        //buscar en la bd un documento mediante la id y borrarlo
+        await Producto.findByIdAndDelete(req.params.id);
+        res.status(200).json({
+            mensaje:'el producto se elimino correctamente'
+        })
+        
+    }catch(error){
+        console.log(error);
+        res.status(404).json({
+            mensaje:'error no se pudo borrar el producto'
         })
     }
 }
