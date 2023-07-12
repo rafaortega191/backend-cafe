@@ -9,7 +9,9 @@ import {
 const router = Router();
 
 //agregar las validaciones con express-validator
-router.route("/").get(listarUsuarios);
+router.route("/")
+.get(listarUsuarios)
+.post(login)
 
 router.route("/nuevo").post(
   [
